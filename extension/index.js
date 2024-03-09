@@ -2,6 +2,7 @@
 
 module.exports = function (nodecg) {
 	nodecg.Replicant("portalName", {
-		defaultValue: "N/A"
+		defaultValue: "N/A",
+		persistent: false
 	});
 };
