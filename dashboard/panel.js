@@ -56,7 +56,7 @@ function mirror() {
             rectangle: { top: 515, left: 628, width: 664, height: 88 },
         });
         console.log(text);
-        portalReplicant.value = text.replace(/[^\w\s]/g, "");
+        portalReplicant.value = text.replace(/[^\d\w\s-]/g, "");
         // await worker.terminate();
     })();
 }
