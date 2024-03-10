@@ -2,7 +2,13 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<script type="module" src="panel.js" defer async></script>
+		<script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+		<script type="module" src="panel.js" defer></script>
+		<style>
+			video {
+				max-width: 0px;
+			}
+		</style>
 	</head>
 	<body>
 		<form>
@@ -14,5 +20,9 @@
 		<form>
 			<button type="button" id="tesseractTest">Test Tesseract</button>
 		</form>
+
+		<video id="screenshare" autoplay></video>
+		<br>
+		<canvas id="canvas"></canvas>
 	</body>
 </html>
