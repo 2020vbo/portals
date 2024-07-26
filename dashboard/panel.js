@@ -1,5 +1,4 @@
-// You can access the NodeCG api anytime from the `window.nodecg` object
-// Or just `nodecg` for short. Like this!:
+//Browser source link: http://localhost:9090/bundles/portals/graphics/index.html
 
 document.querySelector("#set").addEventListener("click", setPortalName);
 const portalReplicant = nodecg.Replicant("portalName");
@@ -42,7 +41,18 @@ async function startCapture(displayMediaOptions) {
     }
 }
 
-startCapture(options);
+function stopCapture() {
+    clearInterval(intervalID);
+    let tracks = video.srcObject.getTracks();
+
+    tracks.forEach((track) => track.stop());
+    video.srcObject = null;
+}
+
+const startTesseractButton = document.querySelector("#tesseractTest");
+startTesseractButton.addEventListener("click", () => { startCapture(options) });
+const stopTesseractButton = document.querySelector("#stopTesseract");
+stopTesseractButton.addEventListener("click", stopCapture);
 
 function mirror() {
     canvas.width = video.videoWidth;
@@ -60,3 +70,4 @@ function mirror() {
         // await worker.terminate();
     })();
 }
+
