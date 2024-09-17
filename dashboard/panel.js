@@ -54,6 +54,9 @@ startTesseractButton.addEventListener("click", () => { startCapture(options) });
 const stopTesseractButton = document.querySelector("#stopTesseract");
 stopTesseractButton.addEventListener("click", stopCapture);
 
+
+let tesseractAction = detectGameStart;
+
 function mirror() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
@@ -61,7 +64,7 @@ function mirror() {
     ctx.filter = "grayscale(100%)";
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    readPortal();
+    tesseractAction();
 }
 
 async function detectGameStart() {
@@ -79,14 +82,29 @@ async function detectGameStart() {
     console.log([hp1, hp2, hp3]);
 
     // trigger game started state if 2/3 are = 100, listen for portal
+    if (hp1 === "100" || hp2 === "100") {
+        if ((hp1 === "100" && hp2 === "100") || hp3 === "100") {
+            console.log("Game has started: looking for portal name.")
+            tesseractAction = readPortal;
+        }
+    }
 }
+
+const portalList = ["Augment Payout"];
 
 async function readPortal() {
     const { data: { text } } = await worker.recognize(canvas, {
         rectangle: { top: 515, left: 628, width: 664, height: 88 },
     });
     console.log(text);
-    portalReplicant.value = text.replace(/[^\d\w\s-\']/g, "");
+    let portalName = text.replace(/[^\d\w\s-\']/g, "");
+
+    if (portalList.includes(portalName)) {
+        portalReplicant.value = portalName;
+        console.log(`Portal ${portalName} detected: waiting for end of game.`)
+
+        tesseractAction = detectGameEnd;
+    }
     // await worker.terminate();
 
     // trigger portal selected state, listen for end of game
